@@ -25,7 +25,7 @@ function App() {
 				</div> */}
 
 				{/* Opponent's grid */}
-				<CellGrid cellStyle="w-6 h-6 border border-gray-300" />
+				<CellGrid cellStyle="w-6 h-4 border border-gray-300" />
 
 				{/* My own grid */}
 				<div className="flex-1 flex items-center">
@@ -42,6 +42,7 @@ function CellGrid({ cellStyle = "w-12 h-12 border-2 border-gray-300" }) {
 	return (
 		<div className="flex justify-center items-center">
 			<div className="flex flex-col gap-1 max-w-sm">
+				<CellRow cellStyle={cellStyle} />
 				<CellRow cellStyle={cellStyle} />
 				<CellRow cellStyle={cellStyle} />
 				<CellRow cellStyle={cellStyle} />
@@ -107,9 +108,14 @@ function Keyboard() {
 	);
 }
 
-function Key({ letter, isWide = false }) {
+function Key({ letter = "", isWide = false }) {
+	function handleClick() {
+		console.log(`Key pressed: ${letter}`);
+	}
+
 	return (
 		<button
+			onClick={handleClick}
 			className={`${
 				isWide ? "w-14 sm:w-16" : "w-10 sm:w-14"
 			} h-12 sm:h-14 bg-gray-300 hover:bg-gray-400 rounded font-bold ${
