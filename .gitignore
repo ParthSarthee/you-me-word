@@ -1,0 +1,66 @@
+# Dependencies
+**/node_modules/
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml
+
+# Environment variables
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# Build outputs
+**/dist/
+**/build/
+**/dist-ssr/
+**/*.tsbuildinfo
+
+# Logs
+**/logs/
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Coverage
+**/coverage/
+**/*.lcov
+**/.nyc_output/
+
+# IDEs
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# MongoDB
+**/data/
+*.mongodb
+
+# Temporary files
+**/tmp/
+**/temp/
+*.tmp
+*.local
+
+# Backend specific (Express/Node)
+you-me-word-backend/.env
+you-me-word-backend/uploads/
+
+# Frontend specific (Vite/React)
+you-me-word-frontend/.vite/
