@@ -74,3 +74,58 @@ export async function fetchOpponentState(
 		won: data.won,
 	};
 }
+
+// Check if a game code is already in use
+export async function isGameCodeInUse(gameCode: number): Promise<boolean> {
+	const { data, error } = await supabase
+		.from(TABLE_NAME)
+		.select("id")
+		.eq("game_code", gameCode)
+		.limit(1);
+
+	if (error) {
+		console.error("Error checking game code:", error);
+		return false;
+	}
+
+	return data && data.length > 0;
+}
+
+// Generate a unique game code that's not already in use
+// Returns null if all attempts fail (user should retry)
+export async function generateUniqueGameCode(
+	totalWords: number,
+): Promise<number | null> {
+	let attempts = 0;
+	const maxAttempts = 10;
+
+	while (attempts < maxAttempts) {
+		// Ensure code is within bounds of solution array
+		const code = Math.floor(Math.random() * Math.min(totalWords, 2300));
+		const inUse = await isGameCodeInUse(code);
+
+		if (!inUse) {
+			return code;
+		}
+		attempts++;
+	}
+
+	// All attempts failed - return null so user can retry
+	return null;
+}
+
+// Clean up old games (older than 24 hours)
+export async function cleanupOldGames(): Promise<void> {
+	const twentyFourHoursAgo = new Date(
+		Date.now() - 24 * 60 * 60 * 1000,
+	).toISOString();
+
+	const { error } = await supabase
+		.from(TABLE_NAME)
+		.delete()
+		.lt("updated_at", twentyFourHoursAgo);
+
+	if (error) {
+		console.error("Error cleaning up old games:", error);
+	}
+}

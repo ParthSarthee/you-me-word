@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import solutionWordsArray from "../assets/solution_words.json";
 import wordleWordsArray from "../assets/wordle_words.json";
+import { generateUniqueGameCode, cleanupOldGames } from "../lib/supabase";
 
 const wordleWords = new Set(wordleWordsArray);
 
@@ -33,7 +34,7 @@ interface GameState {
 	opponentWon: boolean;
 
 	// Actions
-	startNewGame: () => void;
+	startNewGame: () => Promise<boolean>; // returns true if successful
 	joinGame: (code: number) => void;
 	handleKeyPress: (letter: string) => void;
 	handleEnterPress: () => boolean; // returns true if word was valid
@@ -75,14 +76,25 @@ export const useGameStore = create<GameState>((set, get) => ({
 	opponentGameOver: false,
 	opponentWon: false,
 
-	startNewGame: () => {
-		// Pick a random word index as the game code
-		const code = Math.floor(Math.random() * solutionWordsArray.length);
-		const word = solutionWordsArray[code].toUpperCase().split("");
+	startNewGame: async () => {
+		// Clean up old games first
+		await cleanupOldGames();
+
+		// Generate a unique game code
+		const code = await generateUniqueGameCode(solutionWordsArray.length);
+
+		// If code generation failed, return false
+		if (code === null) {
+			return false;
+		}
+
+		// Ensure code is within bounds
+		const safeCode = Math.min(code, solutionWordsArray.length - 1);
+		const word = solutionWordsArray[safeCode].toUpperCase().split("");
 
 		set({
 			screen: "game",
-			gameCode: code,
+			gameCode: safeCode,
 			playerRole: "host",
 			word,
 			myWords: emptyGrid(),
@@ -96,6 +108,8 @@ export const useGameStore = create<GameState>((set, get) => ({
 			opponentGameOver: false,
 			opponentWon: false,
 		});
+
+		return true;
 	},
 
 	joinGame: (code: number) => {
