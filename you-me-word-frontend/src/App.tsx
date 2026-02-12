@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
+import { twMerge } from "tailwind-merge";
 
 function App() {
 	const [rowIndex, setRowIndex] = useState<number>(0);
@@ -202,8 +203,8 @@ function CellRow({
 }
 
 function Cell({
-	style,
-	value,
+	style = "",
+	value = "",
 	row,
 	col,
 	rowIndex,
@@ -216,16 +217,15 @@ function Cell({
 	rowIndex: number;
 	colIndex: number;
 }) {
-	// if (rowIndex === row && colIndex === col) {
-	// }
+	if (value !== "") {
+		style = twMerge(style, "border-gray-500");
+	}
 
-	return (
-		<div
-			className={`${style} flex justify-center items-center p-1 text-3xl font-bold`}
-		>
-			{value}
-		</div>
-	);
+	const defaultStyle =
+		"w-12 h-12 border-2 border-gray-300 flex justify-center items-center p-1 text-3xl font-bold text-gray-500";
+	const finalStyle = twMerge(defaultStyle, style);
+
+	return <div className={finalStyle}>{value}</div>;
 }
 
 function Keyboard({
