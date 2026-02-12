@@ -1,0 +1,75 @@
+import { useState } from "react";
+import { useGameStore } from "../store/gameStore";
+
+function StartScreen() {
+	const [codeInput, setCodeInput] = useState("");
+	const [showCodeInput, setShowCodeInput] = useState(false);
+
+	const startNewGame = useGameStore((state) => state.startNewGame);
+	const joinGame = useGameStore((state) => state.joinGame);
+
+	const handleJoinGame = () => {
+		const code = parseInt(codeInput, 10);
+		if (isNaN(code)) {
+			alert("Please enter a valid number");
+			return;
+		}
+		joinGame(code);
+	};
+
+	return (
+		<div className="w-full h-screen flex flex-col items-center justify-center gap-8 px-4">
+			<div className="text-center">
+				<h1 className="text-4xl font-bold text-gray-800 mb-2">
+					You & Me Wordle
+				</h1>
+				<p className="text-gray-500">Play Wordle together! 💕</p>
+			</div>
+
+			<div className="flex flex-col gap-4 w-full max-w-xs">
+				<button
+					onClick={startNewGame}
+					className="w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg text-lg transition-colors"
+				>
+					New Game
+				</button>
+
+				{!showCodeInput ? (
+					<button
+						onClick={() => setShowCodeInput(true)}
+						className="w-full py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg text-lg transition-colors"
+					>
+						Join Game
+					</button>
+				) : (
+					<div className="flex flex-col gap-2">
+						<input
+							type="text"
+							value={codeInput}
+							onChange={(e) => setCodeInput(e.target.value)}
+							placeholder="Enter game code"
+							className="w-full py-3 px-4 border-2 border-gray-300 rounded-lg text-lg text-center focus:border-blue-500 focus:outline-none"
+							autoFocus
+						/>
+						<div className="flex gap-2">
+							<button
+								onClick={() => setShowCodeInput(false)}
+								className="flex-1 py-3 bg-gray-300 hover:bg-gray-400 font-bold rounded-lg transition-colors"
+							>
+								Cancel
+							</button>
+							<button
+								onClick={handleJoinGame}
+								className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors"
+							>
+								Join
+							</button>
+						</div>
+					</div>
+				)}
+			</div>
+		</div>
+	);
+}
+
+export default StartScreen;
