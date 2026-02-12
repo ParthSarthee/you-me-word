@@ -20,16 +20,14 @@ function StartScreen() {
 	return (
 		<div className="w-full h-screen flex flex-col items-center justify-center gap-8 px-4">
 			<div className="text-center">
-				<h1 className="text-4xl font-bold text-gray-800 mb-2">
-					You & Me Wordle
-				</h1>
-				<p className="text-gray-500">Play Wordle together! 💕</p>
+				<h1 className="text-4xl font-bold text-gray-700 mb-2">YouMe & Word</h1>
+				<p className="text-gray-500">Let's play together!</p>
 			</div>
 
 			<div className="flex flex-col gap-4 w-full max-w-xs">
 				<button
 					onClick={startNewGame}
-					className="w-full py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-lg text-lg transition-colors"
+					className="w-full py-4 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg text-lg transition-colors"
 				>
 					New Game
 				</button>
@@ -37,7 +35,7 @@ function StartScreen() {
 				{!showCodeInput ? (
 					<button
 						onClick={() => setShowCodeInput(true)}
-						className="w-full py-4 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg text-lg transition-colors"
+						className="w-full py-4 bg-slate-600 hover:bg-slate-500 text-white font-bold rounded-lg text-lg transition-colors"
 					>
 						Join Game
 					</button>
@@ -48,7 +46,7 @@ function StartScreen() {
 							value={codeInput}
 							onChange={(e) => setCodeInput(e.target.value)}
 							placeholder="Enter game code"
-							className="w-full py-3 px-4 border-2 border-gray-300 rounded-lg text-lg text-center focus:border-blue-500 focus:outline-none"
+							className="w-full py-3 px-4 border-2 border-gray-300 rounded-lg text-lg text-center focus:border-gray-500 focus:outline-none"
 							autoFocus
 						/>
 						<div className="flex gap-2">
@@ -60,7 +58,7 @@ function StartScreen() {
 							</button>
 							<button
 								onClick={handleJoinGame}
-								className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-lg transition-colors"
+								className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white font-bold rounded-lg transition-colors"
 							>
 								Join
 							</button>
